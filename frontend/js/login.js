@@ -17,7 +17,7 @@ loginForm.addEventListener("submit", function(event) {
 
     if (email === "" || password === "") {
 
-        showMessage("Please enter your email and password.", "error");
+        showMessage("Please enter your email and Password.", "error");
 
         return;
     }
@@ -26,23 +26,18 @@ loginForm.addEventListener("submit", function(event) {
     const storedUser =
         JSON.parse(localStorage.getItem("secureAttendUser"));
 
-
     if (storedUser === null) {
-
         showMessage(
             "No account found. Please create an account first.",
             "error"
         );
-
         return;
     }
-
 
     if (
         email !== storedUser.email ||
         password !== storedUser.password
     ) {
-
         showMessage(
             "Invalid email or password.",
             "error"
@@ -51,12 +46,10 @@ loginForm.addEventListener("submit", function(event) {
         return;
     }
 
-
     localStorage.setItem(
         "isLoggedIn",
         "true"
     );
-
 
     window.location.href = "dashboard.html";
 

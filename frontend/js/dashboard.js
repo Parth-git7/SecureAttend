@@ -7,7 +7,7 @@ if (loggedIn !== "true") {
 
 const user =
     JSON.parse(localStorage.getItem("secureAttendUser"));
-
+    
 if (user !== null) {
     document.getElementById("studentName").textContent = user.name;
     document.getElementById("profileName").textContent = user.name;

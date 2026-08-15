@@ -1,0 +1,71 @@
+SecureAttend/
+├── client/                      # React app (Vite)
+│   ├── src/
+│   │   ├── api/                 # axios instance + endpoint functions
+│   │   ├── components/
+│   │   │   ├── student/
+│   │   │   ├── teacher/
+│   │   │   ├── admin/
+│   │   │   └── shared/
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   ├── student/
+│   │   │   │   ├── StudentDashboard.jsx
+│   │   │   │   ├── FaceRegistration.jsx
+│   │   │   │   └── JoinSession.jsx
+│   │   │   ├── teacher/
+│   │   │   │   ├── TeacherDashboard.jsx
+│   │   │   │   ├── StartSession.jsx
+│   │   │   │   └── LiveAttendance.jsx
+│   │   │   └── admin/
+│   │   │       ├── ManageStudents.jsx
+│   │   │       ├── ManageTeachers.jsx
+│   │   │       └── ManageGroups.jsx
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx
+│   │   ├── routes/
+│   │   │   └── ProtectedRoute.jsx   # role-based route guard
+│   │   ├── hooks/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── .env                     # VITE_API_URL etc.
+│   └── package.json
+│
+├── server/                      # Node + Express
+│   ├── server.js
+│   ├── config/
+│   │   └── db.js                # mongoose.connect()
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Group.js
+│   │   ├── AttendanceSession.js
+│   │   └── AttendanceRecord.js
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   ├── student.routes.js
+│   │   ├── teacher.routes.js
+│   │   ├── admin.routes.js
+│   │   ├── session.routes.js
+│   │   └── attendance.routes.js
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── session.controller.js
+│   │   ├── verification.controller.js
+│   │   └── attendance.controller.js
+│   ├── middleware/
+│   │   ├── auth.middleware.js   # verifies JWT
+│   │   └── role.middleware.js   # checks role
+│   ├── services/
+│   │   ├── faceService.js
+│   │   ├── livenessService.js
+│   │   ├── locationService.js
+│   │   └── exportService.js     # CSV/Excel
+│   ├── utils/
+│   │   └── roomCode.js
+│   ├── .env
+│   └── package.json
+│
+├── .gitignore
+├── README.md
+└── package.json                 # optional root, for concurrently running client+server
