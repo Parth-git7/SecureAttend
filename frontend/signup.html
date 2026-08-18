@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAttend | Account Activation & Registration</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-page">
+        <!-- Left Hero Section -->
+        <div class="auth-left">
+            <a href="login.html" class="brand">
+                <div class="brand-icon">✓</div>
+                <span>SecureAttend</span>
+            </a>
+
+            <div class="hero-content">
+                <span class="eyebrow">FIRST-TIME ACTIVATION</span>
+                <h1>
+                    Activate your<br>
+                    <span>University Account.</span>
+                </h1>
+                <p>
+                    Every student and teacher record is pre-provisioned by the university administration. 
+                    Verify your email, set a password, and register your face biometrics in just 2 minutes.
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature">
+                        <div class="feature-icon">✉️</div>
+                        <div>
+                            <strong>Email OTP Verification</strong>
+                            <p>One-time passcode sent directly to your authorized campus inbox.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">📸</div>
+                        <div>
+                            <strong>Face Biometric Template</strong>
+                            <p>Encrypted facial embeddings stored securely for tamper-free attendance.</p>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-icon">🔒</div>
+                        <div>
+                            <strong>Zero Plaintext Storage</strong>
+                            <p>Credentials hashed and securely maintained according to safety standards.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="left-footer">
+                <span>SecureAttend · Project Eval</span>
+                <span>Chitkara University</span>
+            </div>
+        </div>
+
+        <!-- Right Form Section: Multi-Step Activation Wizard -->
+        <div class="auth-right">
+            <div class="auth-container">
+                <div class="mobile-brand">
+                    <div class="brand-icon">✓</div>
+                    <span style="font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px;">SecureAttend</span>
+                </div>
+
+                <!-- Wizard Progress Indicator -->
+                <div class="step-indicator">
+                    <div class="step-item active" id="stepIndicator1">
+                        <div class="step-bubble">1</div>
+                        <span class="step-label">Identify</span>
+                    </div>
+                    <div class="step-item" id="stepIndicator2">
+                        <div class="step-bubble">2</div>
+                        <span class="step-label">Verify</span>
+                    </div>
+                    <div class="step-item" id="stepIndicator3">
+                        <div class="step-bubble">3</div>
+                        <span class="step-label">Security</span>
+                    </div>
+                    <div class="step-item" id="stepIndicator4">
+                        <div class="step-bubble">4</div>
+                        <span class="step-label">Biometric</span>
+                    </div>
+                </div>
+
+                <!-- ================= STEP 1: IDENTITY LOOKUP ================= -->
+                <div class="wizard-step active" id="step1">
+                    <div class="form-header">
+                        <span class="form-eyebrow">STEP 1 OF 4</span>
+                        <h2>Find your record</h2>
+                        <p>Enter your university email to verify your master roster entry.</p>
+                    </div>
+
+                    <div class="demo-accounts-box">
+                        <div class="demo-title">
+                            <span>💡 Pre-configured Unactivated Records:</span>
+                        </div>
+                        <div class="demo-pills">
+                            <button type="button" class="demo-pill student" id="sampleStudentBtn">
+                                Karan (karan.104@chitkara.edu.in)
+                            </button>
+                            <button type="button" class="demo-pill student" id="sampleStudent2Btn">
+                                Vikram (vikram.106@chitkara.edu.in)
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="step1Form">
+                        <div class="input-group">
+                            <label for="activationEmail">University Email</label>
+                            <input
+                                type="email"
+                                id="activationEmail"
+                                placeholder="e.g. karan.104@chitkara.edu.in"
+                                required
+                            >
+                            <div class="input-hint">Must match your university-registered email.</div>
+                        </div>
+
+                        <div id="step1Message" class="message"></div>
+
+                        <button type="submit" class="primary-button" id="step1Btn">
+                            <span>Check Roster & Send OTP</span>
+                            <span>→</span>
+                        </button>
+                    </form>
+
+                    <p class="switch-auth">
+                        Already activated your account?
+                        <a href="login.html">Sign in here</a>
+                    </p>
+                </div>
+
+                <!-- ================= STEP 2: OTP VERIFICATION ================= -->
+                <div class="wizard-step" id="step2">
+                    <div class="form-header">
+                        <span class="form-eyebrow">STEP 2 OF 4</span>
+                        <h2>Enter Verification Code</h2>
+                        <p>We've dispatched a 6-digit OTP to <strong id="displayTargetEmail">your email</strong>.</p>
+                    </div>
+
+                    <div class="otp-demo-badge" id="demoOtpAlert">
+                        <span>🔐 <strong>Simulated OTP:</strong> <span id="demoOtpCode">123456</span></span>
+                        <button type="button" class="secondary-button" id="autoFillOtpBtn" style="height: 28px; padding: 0 8px; font-size: 11px;">
+                            Auto-Fill
+                        </button>
+                    </div>
+
+                    <form id="step2Form">
+                        <div class="otp-inputs">
+                            <input type="text" maxlength="1" class="otp-box" id="otp1" autofocus>
+                            <input type="text" maxlength="1" class="otp-box" id="otp2">
+                            <input type="text" maxlength="1" class="otp-box" id="otp3">
+                            <input type="text" maxlength="1" class="otp-box" id="otp4">
+                            <input type="text" maxlength="1" class="otp-box" id="otp5">
+                            <input type="text" maxlength="1" class="otp-box" id="otp6">
+                        </div>
+
+                        <div id="step2Message" class="message"></div>
+
+                        <button type="submit" class="primary-button" id="step2Btn">
+                            <span>Verify Code</span>
+                            <span>→</span>
+                        </button>
+
+                        <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                            <button type="button" class="secondary-button" id="backToStep1Btn">← Back</button>
+                            <button type="button" class="secondary-button" id="resendOtpBtn">Resend Code</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ================= STEP 3: SET PASSWORD ================= -->
+                <div class="wizard-step" id="step3">
+                    <div class="form-header">
+                        <span class="form-eyebrow">STEP 3 OF 4</span>
+                        <h2>Set Account Password</h2>
+                        <p>Create a secure password to access your SecureAttend account.</p>
+                    </div>
+
+                    <div style="background: #f8fafc; padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 18px; border: 1px solid var(--border);">
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-main);" id="verifiedRecordName">Student Name</div>
+                        <div style="font-size: 12px; color: var(--text-muted);" id="verifiedRecordMeta">Roll No: 104 · Group: G1</div>
+                    </div>
+
+                    <form id="step3Form">
+                        <div class="input-group">
+                            <label for="newPassword">Create Password</label>
+                            <input
+                                type="password"
+                                id="newPassword"
+                                placeholder="At least 6 characters"
+                                required
+                            >
+                        </div>
+
+                        <div class="input-group">
+                            <label for="confirmNewPassword">Confirm Password</label>
+                            <input
+                                type="password"
+                                id="confirmNewPassword"
+                                placeholder="Re-enter password"
+                                required
+                            >
+                        </div>
+
+                        <div id="step3Message" class="message"></div>
+
+                        <button type="submit" class="primary-button" id="step3Btn">
+                            <span>Continue to Face Registration</span>
+                            <span>→</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- ================= STEP 4: FACE BIOMETRIC REGISTRATION ================= -->
+                <div class="wizard-step" id="step4">
+                    <div class="form-header">
+                        <span class="form-eyebrow">STEP 4 OF 4</span>
+                        <h2>Register Face Biometrics</h2>
+                        <p>Position your face inside the frame to create your secure attendance template.</p>
+                    </div>
+
+                    <div class="face-scan-wrapper">
+                        <video id="webcamVideo" class="camera-video" autoplay playsinline muted></video>
+                        <canvas id="faceCaptureCanvas" style="display: none;"></canvas>
+                        
+                        <!-- Simulated Face Mesh / Laser Overlay -->
+                        <div class="scan-reticle">
+                            <div class="scan-laser"></div>
+                        </div>
+
+                        <div class="scan-prompt" id="scanPromptText">
+                            Look directly into camera & hold steady
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+                        <button type="button" class="secondary-button" id="startCamBtn" style="flex: 1;">
+                            📹 Enable Camera
+                        </button>
+                        <button type="button" class="secondary-button" id="simulatedFaceBtn" style="flex: 1;">
+                            ✨ Fast-Simulate Biometrics
+                        </button>
+                    </div>
+
+                    <div id="step4Message" class="message"></div>
+
+                    <button type="button" class="primary-button" id="captureFaceBtn">
+                        <span>Capture & Complete Activation</span>
+                        <span>✓</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/signup.js"></script>
+</body>
+</html>

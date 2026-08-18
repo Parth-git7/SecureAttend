@@ -1,0 +1,74 @@
+# SecureAttend 🎓🔒
+
+**Smart, Multi-Factor, Tamper-Proof University Attendance System**
+
+---
+
+## 🌟 Overview & Architecture
+
+SecureAttend enforces an **Admin Master Roster First** architecture:
+1. **Master Database Setup**: Admin provisions student, teacher, and group rosters in advance.
+2. **First-Time Account Activation**: Users verify their college email via 6-digit OTP, set a password, and register facial biometrics (generating encrypted embeddings).
+3. **Teacher Attendance Room Creation**: Teacher chooses a group (e.g. `G1`) & subject (e.g. `Artificial Intelligence`), captures classroom coordinates, and launches a live 5-character Room Code (e.g. `7F42K`).
+4. **All Students Start as ABSENT**: 100% of the students from the selected group are loaded into the teacher's screen and marked `ABSENT`.
+5. **Student 3-Factor Verification**: Students enter the room code on their portal, which executes:
+   - **Session Verification**: Room code is valid and not expired.
+   - **Geolocation Proximity**: Confirms student is within range of the classroom beacon.
+   - **Face & Liveness Biometric Check**: Live camera stream compares face against registered embedding and tests liveness.
+6. **Dynamic Outcomes**:
+   - **`PRESENT`**: All 3 factors pass. Status turns green immediately on both student & teacher screens.
+   - **`REVIEW`**: Biometrics pass but GPS accuracy is low or inconclusive. Teacher can manually override and approve with one click.
+   - **`REJECTED`**: Biometric mismatch or invalid room code.
+7. **Attendance Finalization & Export**: Teacher closes the session and downloads the CSV report (`G1_Subject_YYYY-MM-DD.csv`).
+
+---
+
+## 📁 Directory Structure
+
+```
+SecureAttend/
+├── frontend/
+│   ├── login.html              # Role-aware login with demo quick-fills
+│   ├── signup.html             # 4-step First-Time Activation Wizard (Email → OTP → Password → Face)
+│   ├── student-dashboard.html  # Student Check-In & 3-Factor Verification Modal & History
+│   ├── teacher-dashboard.html  # Room Controller, Live Master Roster, Override & CSV Export
+│   ├── admin-dashboard.html    # Master DB CRUD for Students, Teachers & Groups
+│   ├── css/
+│   │   └── style.css           # Design system (Space Grotesk + DM Sans, badges, modals, scanner)
+│   └── js/
+│       ├── auth.js             # Core data layer, Master Roster seed, Auth, Session store
+│       ├── login.js            # Login page controller & role routing
+│       ├── signup.js           # Multi-step activation wizard controller
+│       ├── student.js          # Student check-in, GPS & camera biometric verification
+│       ├── teacher.js          # Teacher room creation, live roster polling, CSV export
+│       └── admin.js            # Admin CRUD tables and database reset
+│
+└── README.md
+```
+
+---
+
+## ⚡ Demo Quick-Login Credentials
+
+All demo accounts share the password: `password123`
+
+| Role | Name | Email | Details |
+|---|---|---|---|
+| **Student** | Rahul Sharma | `rahul.101@chitkara.edu.in` | Roll: 101, Group: G1, Biometrics: Active |
+| **Student** | Aman Gupta | `aman.102@chitkara.edu.in` | Roll: 102, Group: G1, Biometrics: Active |
+| **Student (Unactivated)** | Karan Singla | `karan.104@chitkara.edu.in` | Roll: 104, Group: G1 (Test on `signup.html`) |
+| **Teacher** | Dr. Sandeep Sharma | `sharma.t101@chitkara.edu.in` | ID: T101, Dept: Computer Science |
+| **Admin** | System Admin | `admin@chitkara.edu.in` | Master Database Controller |
+
+---
+
+## 🚀 How to Run
+
+Simply open `frontend/login.html` (or `frontend/index.html`) in any modern web browser or serve via Live Server / Python HTTP server:
+
+```bash
+# Optional: run a local static server
+cd frontend
+python -m http.server 8000
+```
+Then visit `http://localhost:8000/login.html`.

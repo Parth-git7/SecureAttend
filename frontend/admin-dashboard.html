@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAttend | Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-left">
+                <a href="admin-dashboard.html" class="nav-brand">
+                    <div class="brand-icon">✓</div>
+                    <span>SecureAttend</span>
+                </a>
+                <span class="role-badge admin">SYSTEM ADMINISTRATOR</span>
+            </div>
+
+            <div class="nav-right">
+                <div class="user-profile-pill">
+                    <div class="avatar-circle" style="background: var(--accent-admin);" id="userAvatar">A</div>
+                    <div class="user-meta">
+                        <span class="user-meta-name" id="navAdminName">System Admin</span>
+                        <span class="user-meta-role">Master DB Control</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-button">Sign Out</button>
+            </div>
+        </nav>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-content">
+            <!-- Header Section -->
+            <div class="page-header">
+                <div>
+                    <span>ADMINISTRATION</span>
+                    <h1>Master Database Management</h1>
+                    <p>Provision and manage master rosters for students, faculty, and academic groups.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="secondary-button" id="resetDbBtn" style="color: var(--danger); border-color: var(--danger-border);">
+                        🔄 Reset Master Database
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card total">
+                    <span class="stat-label">Total Students</span>
+                    <div class="stat-value" id="adminTotalStudents">0</div>
+                    <span class="stat-meta">Across all groups</span>
+                </div>
+
+                <div class="stat-card" style="border-left: 4px solid var(--accent-teacher);">
+                    <span class="stat-label">Faculty / Teachers</span>
+                    <div class="stat-value" id="adminTotalTeachers" style="color: var(--accent-teacher);">0</div>
+                    <span class="stat-meta">Authorized instructors</span>
+                </div>
+
+                <div class="stat-card" style="border-left: 4px solid var(--accent-admin);">
+                    <span class="stat-label">Academic Groups</span>
+                    <div class="stat-value" id="adminTotalGroups" style="color: var(--accent-admin);">0</div>
+                    <span class="stat-meta">Sections configured</span>
+                </div>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="tab-bar">
+                <button type="button" class="tab-btn active" data-tab="studentsTab">
+                    👨‍🎓 Master Students
+                </button>
+                <button type="button" class="tab-btn" data-tab="teachersTab">
+                    👨‍🏫 Faculty & Teachers
+                </button>
+                <button type="button" class="tab-btn" data-tab="groupsTab">
+                    👥 Groups & Batches
+                </button>
+            </div>
+
+            <!-- ================= TAB 1: STUDENTS ================= -->
+            <div class="tab-panel active" id="studentsTab">
+                <div class="card-table-container">
+                    <div class="card-header-actions">
+                        <div class="card-title-group">
+                            <h3>Master Student Roster</h3>
+                            <p>Pre-provisioned student records ready for activation</p>
+                        </div>
+                        <div class="table-controls">
+                            <input type="text" id="adminStudentSearch" class="search-input" placeholder="Search students...">
+                            <button type="button" class="primary-button" id="openAddStudentModalBtn" style="width: auto; height: 38px; padding: 0 16px; font-size: 13px;">
+                                + Add Student
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Full Name</th>
+                                    <th>College Email</th>
+                                    <th>Group</th>
+                                    <th>Biometrics Status</th>
+                                    <th>Account Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminStudentsTableBody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 2: TEACHERS ================= -->
+            <div class="tab-panel" id="teachersTab">
+                <div class="card-table-container">
+                    <div class="card-header-actions">
+                        <div class="card-title-group">
+                            <h3>Faculty & Instructor Records</h3>
+                            <p>Authorized teachers allowed to launch classroom sessions</p>
+                        </div>
+                        <div class="table-controls">
+                            <button type="button" class="primary-button" id="openAddTeacherModalBtn" style="width: auto; height: 38px; padding: 0 16px; font-size: 13px; background: var(--accent-teacher);">
+                                + Add Teacher
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Teacher ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>Assigned Subjects</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTeachersTableBody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3: GROUPS ================= -->
+            <div class="tab-panel" id="groupsTab">
+                <div class="card-table-container">
+                    <div class="card-header-actions">
+                        <div class="card-title-group">
+                            <h3>Academic Groups & Sections</h3>
+                            <p>Master cohorts for subject attendance</p>
+                        </div>
+                        <div class="table-controls">
+                            <button type="button" class="primary-button" id="openAddGroupModalBtn" style="width: auto; height: 38px; padding: 0 16px; font-size: 13px; background: var(--accent-admin);">
+                                + Create Group
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Group ID</th>
+                                    <th>Group Name</th>
+                                    <th>Department</th>
+                                    <th>Semester</th>
+                                    <th>Enrolled Students</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminGroupsTableBody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Add Student -->
+    <div class="modal-overlay" id="addStudentModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Add New Master Student</h3>
+                <button class="modal-close-btn" onclick="closeModal('addStudentModal')">&times;</button>
+            </div>
+            <form id="addStudentForm">
+                <div class="modal-body">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="newStudentRoll">Roll Number</label>
+                            <input type="text" id="newStudentRoll" placeholder="e.g. 111" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="newStudentGroup">Group</label>
+                            <select id="newStudentGroup" required></select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="newStudentName">Full Name</label>
+                        <input type="text" id="newStudentName" placeholder="e.g. Tanya Kapoor" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newStudentEmail">University Email</label>
+                        <input type="email" id="newStudentEmail" placeholder="e.g. tanya.111@chitkara.edu.in" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-button" onclick="closeModal('addStudentModal')">Cancel</button>
+                    <button type="submit" class="primary-button" style="width: auto; padding: 0 20px;">Save Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Teacher -->
+    <div class="modal-overlay" id="addTeacherModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Add Faculty Member</h3>
+                <button class="modal-close-btn" onclick="closeModal('addTeacherModal')">&times;</button>
+            </div>
+            <form id="addTeacherForm">
+                <div class="modal-body">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="newTeacherId">Teacher ID</label>
+                            <input type="text" id="newTeacherId" placeholder="e.g. T104" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="newTeacherDept">Department</label>
+                            <input type="text" id="newTeacherDept" value="Computer Science" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="newTeacherName">Full Name</label>
+                        <input type="text" id="newTeacherName" placeholder="e.g. Dr. Preeti Gill" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newTeacherEmail">College Email</label>
+                        <input type="email" id="newTeacherEmail" placeholder="e.g. gill.t104@chitkara.edu.in" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-button" onclick="closeModal('addTeacherModal')">Cancel</button>
+                    <button type="submit" class="primary-button" style="width: auto; padding: 0 20px; background: var(--accent-teacher);">Save Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Group -->
+    <div class="modal-overlay" id="addGroupModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Create New Academic Group</h3>
+                <button class="modal-close-btn" onclick="closeModal('addGroupModal')">&times;</button>
+            </div>
+            <form id="addGroupForm">
+                <div class="modal-body">
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label for="newGroupId">Group ID / Code</label>
+                            <input type="text" id="newGroupId" placeholder="e.g. G4" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="newGroupSem">Semester</label>
+                            <input type="text" id="newGroupSem" value="6th Semester" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="newGroupName">Group Display Name</label>
+                        <input type="text" id="newGroupName" placeholder="e.g. Group 4 (Cloud & DevOps)" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="newGroupDept">Department</label>
+                        <input type="text" id="newGroupDept" value="Computer Science & Engineering" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-button" onclick="closeModal('addGroupModal')">Cancel</button>
+                    <button type="submit" class="primary-button" style="width: auto; padding: 0 20px; background: var(--accent-admin);">Create Group</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
