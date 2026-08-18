@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAttend | Teacher Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-left">
+                <a href="teacher-dashboard.html" class="nav-brand">
+                    <div class="brand-icon">✓</div>
+                    <span>SecureAttend</span>
+                </a>
+                <span class="role-badge teacher">FACULTY / TEACHER</span>
+            </div>
+
+            <div class="nav-right">
+                <div class="user-profile-pill">
+                    <div class="avatar-circle" style="background: var(--accent-teacher);" id="userAvatar">T</div>
+                    <div class="user-meta">
+                        <span class="user-meta-name" id="navTeacherName">Dr. Sandeep Sharma</span>
+                        <span class="user-meta-role" id="navTeacherId">ID: T101</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-button">Sign Out</button>
+            </div>
+        </nav>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-content">
+            <!-- Header Section -->
+            <div class="page-header">
+                <div>
+                    <span>TEACHER PORTAL</span>
+                    <h1>Classroom Attendance Session</h1>
+                    <p>Select a student group and subject to launch a secure, tamper-proof attendance room.</p>
+                </div>
+                <div id="sessionStatusPillContainer">
+                    <div class="pulse-pill" style="background: #f1f5f9; color: var(--text-muted);">
+                        <span style="width: 8px; height: 8px; border-radius: 50%; background: #94a3b8;"></span>
+                        <span id="globalSessionStatus">No Active Session</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Start Session Setup Card (Shown when no session is active) -->
+            <div class="student-join-card" id="sessionSetupCard">
+                <div class="join-grid">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 700; color: var(--accent-teacher); letter-spacing: 1.5px; text-transform: uppercase;">
+                            CREATE ATTENDANCE ROOM
+                        </span>
+                        <h2 style="font-size: 26px; margin: 6px 0 12px;">Start Attendance Session</h2>
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+                            The master database will automatically load all enrolled students for the chosen group. 
+                            All students start as <strong>ABSENT</strong> until they prove identity via room code, GPS, and biometrics.
+                        </p>
+
+                        <form id="startSessionForm">
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="selectGroup">Select Group</label>
+                                    <select id="selectGroup" required></select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="selectSubject">Select Subject</label>
+                                    <select id="selectSubject" required></select>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="classroomLocation">Classroom / Beacon Location</label>
+                                <input
+                                    type="text"
+                                    id="classroomLocation"
+                                    value="Lab 304 - Turing Block (Lat: 30.5165, Long: 76.6592)"
+                                    required
+                                >
+                            </div>
+
+                            <div id="startSessionMessage" class="message"></div>
+
+                            <button type="submit" class="primary-button" style="background: var(--accent-teacher);">
+                                <span>🚀 Launch Room Code & Load Master Roster</span>
+                                <span>→</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div style="background: #fbfcfe; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px;">
+                        <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-main);">📋 Master Roster Flow</h4>
+                        <div style="font-size: 13px; color: var(--text-muted); display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; gap: 10px;">
+                                <span style="font-weight: 700; color: var(--accent-teacher);">1.</span>
+                                <span>Group roster is loaded from Master DB (e.g., G1 with 10 students).</span>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <span style="font-weight: 700; color: var(--danger);">2.</span>
+                                <span>100% of students initialized as <strong>ABSENT</strong>.</span>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <span style="font-weight: 700; color: var(--success);">3.</span>
+                                <span>Students verify via room code → Instantly flips to <strong>PRESENT</strong>.</span>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <span style="font-weight: 700; color: var(--warning);">4.</span>
+                                <span>Low confidence / GPS issues flagged as <strong>REVIEW</strong> for manual approval.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Room Controller Banner (Shown when session is active) -->
+            <div id="activeSessionContainer" style="display: none;">
+                <div class="room-banner">
+                    <div class="room-info">
+                        <div class="pulse-pill" style="margin-bottom: 12px;">
+                            <span class="pulse-dot"></span>
+                            <span>ATTENDANCE SESSION ACTIVE</span>
+                        </div>
+                        <h2 id="activeSessionSubject">Artificial Intelligence</h2>
+                        <p id="activeSessionMeta">Group G1 · Lab 304 - Turing Block</p>
+                        
+                        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+                            <button type="button" class="secondary-button" id="simulateJoinBtn" style="color: #4338ca; border-color: #c7d2fe; background: #eef2ff;">
+                                ⚡ Simulate Student Joins
+                            </button>
+                            <button type="button" class="secondary-button" id="endSessionBtn" style="color: var(--danger); border-color: var(--danger-border); background: white;">
+                                🛑 End Attendance Session
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="room-code-display">
+                        <span class="code-title">ROOM CODE FOR STUDENTS</span>
+                        <div class="code-digits" id="activeRoomCodeText">7F42K</div>
+                        <div class="code-actions">
+                            <button type="button" class="secondary-button" id="copyCodeBtn" style="height: 32px; font-size: 11px; padding: 0 10px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white;">
+                                📋 Copy Code
+                            </button>
+                            <span style="font-size: 12px; color: #cbd5e1; align-self: center;" id="countdownTimer">⏳ 14:59 remaining</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Attendance Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card total">
+                        <span class="stat-label">Total in Master Roster</span>
+                        <div class="stat-value" id="statTotalStudents">0</div>
+                        <span class="stat-meta">Group Enrolled</span>
+                    </div>
+
+                    <div class="stat-card present">
+                        <span class="stat-label">Verified Present</span>
+                        <div class="stat-value" id="statPresentStudents">0</div>
+                        <span class="stat-meta" id="statPresentPercent">0% Attendance</span>
+                    </div>
+
+                    <div class="stat-card absent">
+                        <span class="stat-label">Currently Absent</span>
+                        <div class="stat-value" id="statAbsentStudents">0</div>
+                        <span class="stat-meta">Pending Check-in</span>
+                    </div>
+
+                    <div class="stat-card review">
+                        <span class="stat-label">Needs Review</span>
+                        <div class="stat-value" id="statReviewStudents">0</div>
+                        <span class="stat-meta">Manual Override Req.</span>
+                    </div>
+                </div>
+
+                <!-- Master Roster Interactive Table -->
+                <div class="card-table-container">
+                    <div class="card-header-actions">
+                        <div class="card-title-group">
+                            <h3 id="rosterTableTitle">Group Master Roster</h3>
+                            <p>Live attendance status automatically synchronized across devices</p>
+                        </div>
+                        <div class="table-controls">
+                            <input type="text" id="rosterSearchInput" class="search-input" placeholder="Search roll no or name...">
+                            <button type="button" class="secondary-button" id="exportCsvBtn">
+                                📥 Download Attendance (CSV)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Student Name</th>
+                                    <th>University Email</th>
+                                    <th>Status</th>
+                                    <th>Verification Details</th>
+                                    <th>Teacher Override</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rosterTableBody">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/teacher.js"></script>
+</body>
+</html>

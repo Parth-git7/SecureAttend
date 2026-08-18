@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureAttend | Student Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Top Navigation -->
+        <nav class="dashboard-nav">
+            <div class="nav-left">
+                <a href="student-dashboard.html" class="nav-brand">
+                    <div class="brand-icon">✓</div>
+                    <span>SecureAttend</span>
+                </a>
+                <span class="role-badge student">STUDENT</span>
+            </div>
+
+            <div class="nav-right">
+                <div class="user-profile-pill">
+                    <div class="avatar-circle" id="userAvatar">S</div>
+                    <div class="user-meta">
+                        <span class="user-meta-name" id="navUserName">Student Name</span>
+                        <span class="user-meta-role" id="navUserRoll">Roll No. —</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-button">Sign Out</button>
+            </div>
+        </nav>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-content">
+            <!-- Header Section -->
+            <div class="page-header">
+                <div>
+                    <span>STUDENT PORTAL</span>
+                    <h1>Welcome, <span id="studentGreetingName">Student</span> 👋</h1>
+                    <p>Enter the classroom room code to verify attendance in active sessions.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="pulse-pill">
+                        <span class="pulse-dot"></span>
+                        <span id="systemStatusText">Ready for Sessions</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Summary & Attendance Overview Cards -->
+            <div class="stats-grid">
+                <div class="stat-card total">
+                    <span class="stat-label">Assigned Group</span>
+                    <div class="stat-value" id="studentGroupDisplay">G1</div>
+                    <span class="stat-meta">Master Roster Enrolled</span>
+                </div>
+
+                <div class="stat-card present">
+                    <span class="stat-label">Face Biometric</span>
+                    <div class="stat-value" style="font-size: 22px; color: var(--success);" id="faceStatusDisplay">✓ Active</div>
+                    <span class="stat-meta">Template Hash Verified</span>
+                </div>
+
+                <div class="stat-card total">
+                    <span class="stat-label">Attendance Rate</span>
+                    <div class="stat-value" id="attendanceRateDisplay">100%</div>
+                    <span class="stat-meta" id="classesCountDisplay">2 Sessions Recorded</span>
+                </div>
+            </div>
+
+            <!-- Join Attendance Session Card -->
+            <div class="student-join-card">
+                <div class="join-grid">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 700; color: var(--primary); letter-spacing: 1.5px; text-transform: uppercase;">
+                            ACTIVE CLASSROOM CHECK-IN
+                        </span>
+                        <h2 style="font-size: 26px; margin: 6px 0 10px;">Join Attendance Session</h2>
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+                            Ask your teacher for the 5-character temporary room code. Your GPS location, 
+                            face match, and liveness will be verified automatically.
+                        </p>
+
+                        <form id="joinSessionForm" style="display: flex; gap: 12px; align-items: stretch;">
+                            <input
+                                type="text"
+                                id="roomCodeInput"
+                                class="code-input-large"
+                                placeholder="7F42K"
+                                maxlength="5"
+                                style="max-width: 200px;"
+                                required
+                            >
+                            <button type="submit" class="primary-button" id="startVerificationBtn" style="height: 58px; flex: 1;">
+                                <span>Verify Attendance</span>
+                                <span>→</span>
+                            </button>
+                        </form>
+                        <div id="joinMessage" class="message" style="margin-top: 14px;"></div>
+                    </div>
+
+                    <div style="background: #f8fafc; border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 22px;">
+                        <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-main);">🔒 3-Factor Verification Requirements</h4>
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-muted);">
+                            <li style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: var(--success); font-weight: 700;">✓</span> 
+                                <span><strong>Session Code:</strong> Active, valid room code from teacher.</span>
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: var(--success); font-weight: 700;">✓</span> 
+                                <span><strong>Location Proximity:</strong> Within ~50m of classroom beacon.</span>
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: var(--success); font-weight: 700;">✓</span> 
+                                <span><strong>Biometric & Liveness:</strong> Live face match (no photos/proxies).</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Verification Result Display Box -->
+                <div id="verificationResultBox" style="display: none;"></div>
+            </div>
+
+            <!-- Attendance History Table -->
+            <div class="card-table-container">
+                <div class="card-header-actions">
+                    <div class="card-title-group">
+                        <h3>Your Attendance History</h3>
+                        <p>Past classroom sessions and verification records</p>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Group</th>
+                                <th>Teacher</th>
+                                <th>Date & Time</th>
+                                <th>Room Code</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceHistoryTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 3-Factor Verification Modal Dialog -->
+    <div class="modal-overlay" id="verificationModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Verifying Attendance</h3>
+                <button class="modal-close-btn" id="closeVerificationModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Step 1: GPS Proximity Check -->
+                <div id="modalStepGps" style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 13px; font-weight: 700;">📍 Factor 1: Location Check</span>
+                        <span id="gpsStatusPill" class="status-badge badge-present">Measuring GPS...</span>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; font-size: 13px;">
+                        <div id="gpsDetailsText">Computing proximity to teacher classroom...</div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Live Face & Liveness Stream -->
+                <div id="modalStepFace">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 13px; font-weight: 700;">👤 Factor 2 & 3: Biometric & Liveness</span>
+                        <span id="faceMatchPill" class="status-badge badge-review">Scanning</span>
+                    </div>
+
+                    <div class="face-scan-wrapper" style="height: 240px;">
+                        <video id="verifyVideo" class="camera-video" autoplay playsinline muted></video>
+                        <canvas id="verifyCanvas" style="display: none;"></canvas>
+                        
+                        <div class="scan-reticle">
+                            <div class="scan-laser"></div>
+                        </div>
+
+                        <div class="scan-prompt" id="livenessPrompt">
+                            Align face in oval and blink naturally
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modalVerificationMsg" class="message" style="margin-top: 14px;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary-button" id="simulateGpsFailureBtn" style="font-size: 11px;">
+                    Test GPS Low Confidence (Review)
+                </button>
+                <button type="button" class="primary-button" id="confirmVerificationBtn" style="width: auto; padding: 0 24px;">
+                    Submit Verification ✓
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/student.js"></script>
+</body>
+</html>

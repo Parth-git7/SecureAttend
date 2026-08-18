@@ -1,161 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SecureAttend | Login</title>
-
+    <title>SecureAttend | Sign In</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
     <div class="auth-page">
-
+        <!-- Left Hero Section -->
         <div class="auth-left">
-
-            <div class="brand">
+            <a href="login.html" class="brand">
                 <div class="brand-icon">✓</div>
                 <span>SecureAttend</span>
-            </div>
+            </a>
 
             <div class="hero-content">
-
-                <span class="eyebrow">WELCOME BACK</span>
-
+                <span class="eyebrow">SMART & SECURE ATTENDANCE</span>
                 <h1>
-                    Your attendance,
-                    <span>secured.</span>
+                    Attendance that<br>
+                    <span>you can trust.</span>
                 </h1>
-
                 <p>
-                    Sign in to continue to your SecureAttend
-                    dashboard and manage your attendance securely.
+                    SecureAttend combines Master Roster validation, session tokens, 
+                    and 3-factor biometric & geolocation checks to make university attendance tamper-proof.
                 </p>
 
                 <div class="feature-list">
-
                     <div class="feature">
-                        <div class="feature-icon">◉</div>
+                        <div class="feature-icon">👤</div>
                         <div>
-                            <strong>Secure Identity</strong>
-                            <p>Your account is tied to your university identity.</p>
+                            <strong>Master Database Roster</strong>
+                            <p>All students pre-loaded as Absent until proven Present.</p>
                         </div>
                     </div>
 
                     <div class="feature">
-                        <div class="feature-icon">◆</div>
+                        <div class="feature-icon">🛡️</div>
                         <div>
-                            <strong>Fast Access</strong>
-                            <p>Get to your attendance dashboard quickly.</p>
+                            <strong>3-Factor Verification</strong>
+                            <p>Face matching, liveness detection, and GPS proximity validation.</p>
                         </div>
                     </div>
 
                     <div class="feature">
-                        <div class="feature-icon">⌖</div>
+                        <div class="feature-icon">📊</div>
                         <div>
-                            <strong>Ready for Verification</strong>
-                            <p>Future attendance sessions will be verified securely.</p>
+                            <strong>Teacher Override & Export</strong>
+                            <p>Instant CSV report generation ready for university portals.</p>
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="left-footer">
-                SecureAttend · Student Project
+                <span>SecureAttend · Project Eval</span>
+                <span>Chitkara University</span>
             </div>
-
         </div>
 
-
+        <!-- Right Form Section -->
         <div class="auth-right">
-
             <div class="auth-container">
-
                 <div class="mobile-brand">
                     <div class="brand-icon">✓</div>
-                    <span>SecureAttend</span>
+                    <span style="font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px;">SecureAttend</span>
                 </div>
 
                 <div class="form-header">
-
-                    <span class="form-eyebrow">WELCOME BACK</span>
-
+                    <span class="form-eyebrow">PORTAL ACCESS</span>
                     <h2>Sign in to SecureAttend</h2>
-
-                    <p>
-                        Enter your credentials to access your dashboard.
-                    </p>
-
+                    <p>Enter your university credentials to access your dashboard.</p>
                 </div>
 
+                <!-- Quick Demo Accounts for Fast Testing -->
+                <div class="demo-accounts-box">
+                    <div class="demo-title">
+                        <span>⚡ Demo Quick-Fill</span>
+                        <span style="font-size: 10px; color: var(--text-muted);">Pass: password123</span>
+                    </div>
+                    <div class="demo-pills">
+                        <button type="button" class="demo-pill student" id="demoStudentBtn">
+                            🎓 Student (Rahul)
+                        </button>
+                        <button type="button" class="demo-pill teacher" id="demoTeacherBtn">
+                            👨‍🏫 Teacher (Dr. Sharma)
+                        </button>
+                        <button type="button" class="demo-pill admin" id="demoAdminBtn">
+                            ⚙️ Admin
+                        </button>
+                    </div>
+                </div>
 
                 <form id="loginForm">
-
                     <div class="input-group">
-
-                        <label for="loginEmail">
-                            University Email
-                        </label>
-
+                        <label for="loginEmail">University Email</label>
                         <input
                             type="email"
                             id="loginEmail"
-                            placeholder="you@chitkara.edu.in"
+                            placeholder="e.g. rahul.101@chitkara.edu.in"
                             autocomplete="email"
+                            required
                         >
-
                     </div>
 
-
                     <div class="input-group">
-
-                        <label for="loginPassword">
-                            Password
-                        </label>
-
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px;">
+                            <label for="loginPassword" style="margin-bottom: 0;">Password</label>
+                            <a href="signup.html" style="font-size: 12px; color: var(--primary); text-decoration: none;">Forgot / First Time?</a>
+                        </div>
                         <input
                             type="password"
                             id="loginPassword"
-                            placeholder="Enter your password"
+                            placeholder="Enter your account password"
                             autocomplete="current-password"
+                            required
                         >
-
                     </div>
-
 
                     <div id="loginMessage" class="message"></div>
 
-
-                    <button
-                        type="submit"
-                        class="primary-button"
-                    >
-                        Sign In
+                    <button type="submit" class="primary-button" id="loginSubmitBtn">
+                        <span>Sign In</span>
                         <span>→</span>
                     </button>
-
                 </form>
 
-
                 <p class="switch-auth">
-                    Don't have an account?
-                    <a href="index.html">Create account</a>
+                    First time student or teacher?
+                    <a href="signup.html">Activate Your Account</a>
                 </p>
-
             </div>
-
         </div>
-
     </div>
 
-
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
     <script src="js/login.js"></script>
-
 </body>
-
 </html>
